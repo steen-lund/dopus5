@@ -538,7 +538,8 @@ void backdrop_add_leftouts(BackdropInfo *info)
 	// added option to show workbench leftouts, set in config module
 	if (environment->env->display_options & DISPOPTF_SHOW_WBLEFTOUTS)
 	{
-		BackdropObject *object, *newobject;
+		BackdropObject *object;
+		BackdropObject *newobject UNUSED;  // Only used by the disabled code below
 		char buf[2048], leftout[2048];
 		BPTR backdrop;
 		char *pos;

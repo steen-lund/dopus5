@@ -2043,13 +2043,11 @@ static void store_options_gadgets(struct window_params *wp)
 	case ENV_SUB_GLOBAL: {
 		char oldlog[LOGNAMELEN + 1];
 		char *anonpass;
-		int logopen;
 		tmp_oc = &dg->dg_oc;
 
 		env = &tmp_oc->oc_env;
 
 		strcpy(oldlog, tmp_oc->oc_logname);
-		logopen = tmp_oc->oc_enable_log;
 
 		anonpass = (char *)GetGadgetValue(objlist, GAD_ENV_ANON_PASSWORD);
 
@@ -2412,7 +2410,7 @@ static struct window_params *show_connect(struct display_globals *dg, struct sub
 	struct connect_msg *cm;
 	cm = (struct connect_msg *)imsg->data;
 
-	if (cm && cm->cm_opus)	// Is this a valid message ?
+	if (cm && *cm->cm_opus)	// Is this a valid message ?
 	{
 		struct site_entry *e;
 		struct window_params *wp;
@@ -2486,7 +2484,7 @@ static struct window_params *add_entry(struct display_globals *dg, struct subpro
 
 	cm = (struct connect_msg *)imsg->data;
 
-	if (cm && cm->cm_opus)	// Is this a valid message ?
+	if (cm && *cm->cm_opus)	// Is this a valid message ?
 	{
 		struct site_entry *e;
 
@@ -3362,7 +3360,7 @@ static struct window_params *show_addrbook(struct display_globals *dg, struct su
 
 	am = (struct addrbook_msg *)imsg->data;
 
-	if (am && am->am_opus)
+	if (am && *am->am_opus)
 	{
 		struct IBox pos;
 		short old_font_size = 0;
@@ -3401,10 +3399,10 @@ static struct window_params *show_addrbook(struct display_globals *dg, struct su
 			// Is font size the same?
 			if (dg->dg_og->og_screen->RastPort.TxHeight == old_font_size)
 			{
-				newwin.dims->char_dim.Width = 0;
-				newwin.dims->char_dim.Height = 0;
-				newwin.dims->fine_dim.Width = pos.Width;
-				newwin.dims->fine_dim.Height = pos.Height;
+				ftp_win.char_dim.Width = 0;
+				ftp_win.char_dim.Height = 0;
+				ftp_win.fine_dim.Width = pos.Width;
+				ftp_win.fine_dim.Height = pos.Height;
 			}
 		}
 
@@ -3412,14 +3410,14 @@ static struct window_params *show_addrbook(struct display_globals *dg, struct su
 		if (old_font_size)
 		{
 			// Get position
-			newwin.dims->char_dim.Left = 0;
-			newwin.dims->char_dim.Top = 0;
-			newwin.dims->fine_dim.Left = pos.Left;
-			newwin.dims->fine_dim.Top = pos.Top;
+			ftp_win.char_dim.Left = 0;
+			ftp_win.char_dim.Top = 0;
+			ftp_win.fine_dim.Left = pos.Left;
+			ftp_win.fine_dim.Top = pos.Top;
 
 			// calc / adjust dimension
-			newwin.dims->char_dim.Height = pos.Height / old_font_size;
-			newwin.dims->fine_dim.Height = pos.Height - newwin.dims->char_dim.Height * old_font_size;
+			ftp_win.char_dim.Height = pos.Height / old_font_size;
+			ftp_win.fine_dim.Height = pos.Height - ftp_win.char_dim.Height * old_font_size;
 		}
 
 		// Open window, add objects

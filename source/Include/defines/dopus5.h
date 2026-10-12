@@ -52,7 +52,7 @@
 	AROS_LC2(ObjectList *,                               \
 			 AddObjectList,                              \
 			 AROS_LCA(struct Window *, (___window), A0), \
-			 AROS_LCA(ObjectDef *, (___objects), A1),    \
+			 AROS_LCA(const ObjectDef *, (___objects), A1), \
 			 struct Library *,                           \
 			 DOPUS_BASE_NAME,                            \
 			 48,                                         \
@@ -84,7 +84,7 @@
 	AROS_VOID_LC2(                                       \
 			 AddWindowMenus,                             \
 			 AROS_LCA(struct Window *, (___window), A0), \
-			 AROS_LCA(MenuData *, (___data), A1),        \
+			 AROS_LCA(const MenuData *, (___data), A1), \
 			 struct Library *,                           \
 			 DOPUS_BASE_NAME,                            \
 			 63,                                         \
@@ -224,7 +224,7 @@
 	AROS_LC4(Att_Node *,                                 \
 			 Att_NewNode,                                \
 			 AROS_LCA(Att_List *, (___list), A0),        \
-			 AROS_LCA(char *, (___name), A1),            \
+			 AROS_LCA(const char *, (___name), A1), \
 			 AROS_LCA(IPTR, (___data), D0),              \
 			 AROS_LCA(ULONG, (___flags), D1),            \
 			 struct Library *,                           \
@@ -332,7 +332,7 @@
 #define BuildMenuStrip(___data, ___locale)                    \
 	AROS_LC2(struct Menu *,                                   \
 			 BuildMenuStrip,                                  \
-			 AROS_LCA(MenuData *, (___data), A0),             \
+			 AROS_LCA(const MenuData *, (___data), A0), \
 			 AROS_LCA(struct DOpusLocale *, (___locale), A1), \
 			 struct Library *,                                \
 			 DOPUS_BASE_NAME,                                 \
@@ -2653,8 +2653,8 @@
 	AROS_VOID_LC3(                                       \
 			 SetConfigWindowLimits,                      \
 			 AROS_LCA(struct Window *, (___window), A0), \
-			 AROS_LCA(ConfigWindow *, (___min), A1),     \
-			 AROS_LCA(ConfigWindow *, (___max), A2),     \
+			 AROS_LCA(const ConfigWindow *, (___min), A1), \
+			 AROS_LCA(const ConfigWindow *, (___max), A2), \
 			 struct Library *,                           \
 			 DOPUS_BASE_NAME,                            \
 			 310,                                        \
@@ -3178,7 +3178,7 @@
 	AROS_LC3(long,                            \
 			 WriteBuf,                        \
 			 AROS_LCA(APTR, (___file), A0),   \
-			 AROS_LCA(char *, (___data), A1), \
+			 AROS_LCA(const char *, (___data), A1), \
 			 AROS_LCA(long, (___size), D0),   \
 			 struct Library *,                \
 			 DOPUS_BASE_NAME,                 \

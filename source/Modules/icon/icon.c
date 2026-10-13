@@ -388,14 +388,14 @@ void icon_build_tooltypes(icon_data *data)
 					// Author string?
 					//				if	(*data->icon->do_ToolTypes[num]/*[0]*/=='�' ||
 					//					*data->icon->do_ToolTypes[num]/*[0]*/=='�')
-					if ('�' == (char)*data->icon->do_ToolTypes[num] /*[0]*/ ||
-						'�' == (char)*data->icon->do_ToolTypes[num] /*[0]*/)
+					if ('\xab' == (char)*data->icon->do_ToolTypes[num] /*[0]*/ ||
+						'\xbb' == (char)*data->icon->do_ToolTypes[num] /*[0]*/)
 					{
 						char *ptr;
 
 						// Skip through
 						ptr = data->icon->do_ToolTypes[num];
-						while (*ptr == '�' || *ptr == '�')
+						while (*ptr == '\xab' || *ptr == '\xbb')
 							++ptr;
 
 						// Find 'Icon by' string
@@ -413,7 +413,7 @@ void icon_build_tooltypes(icon_data *data)
 							ptr = data->author + strlen(data->author) - 1;
 
 							// Strip trailing characters
-							while (*ptr == '�' || *ptr == '�' || *ptr == ' ')
+							while (*ptr == '\xab' || *ptr == '\xbb' || *ptr == ' ')
 								*(ptr--) = 0;
 
 							// Get next tooltype
@@ -3306,20 +3306,20 @@ BOOL icon_save(icon_data *data, char *save_name, BOOL err)
 int tooltype_strcmp(char *name1, char *name2, ULONG flags)
 {
 	// Ignore euro quotes if both are authors
-	if ((name1[0] == '�' || name1[0] == '�') && (name2[0] == '�' || name2[0] == '�'))
+	if ((name1[0] == '\xab' || name1[0] == '\xbb') && (name2[0] == '\xab' || name2[0] == '\xbb'))
 	{
-		while (*name1 == '�' || *name1 == '�')
+		while (*name1 == '\xab' || *name1 == '\xbb')
 			++name1;
 
-		while (*name2 == '�' || *name2 == '�')
+		while (*name2 == '\xab' || *name2 == '\xbb')
 			++name2;
 	}
 
 	// Author comes before all else
-	else if (name1[0] == '�' || name1[0] == '�')
+	else if (name1[0] == '\xab' || name1[0] == '\xbb')
 		return -1;
 
-	else if (name2[0] == '�' || name2[0] == '�')
+	else if (name2[0] == '\xab' || name2[0] == '\xbb')
 		return 1;
 
 	// Enabled tooltypes at top when seperated

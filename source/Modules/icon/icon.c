@@ -386,16 +386,16 @@ void icon_build_tooltypes(icon_data *data)
 				if (!*data->author)
 				{
 					// Author string?
-					//				if	(*data->icon->do_ToolTypes[num]/*[0]*/==0xEFBFBD ||
-					//					*data->icon->do_ToolTypes[num]/*[0]*/==0xEFBFBD)
-					if (0xEFBFBD == (char)*data->icon->do_ToolTypes[num] /*[0]*/ ||
-						0xEFBFBD == (char)*data->icon->do_ToolTypes[num] /*[0]*/)
+					//				if	(*data->icon->do_ToolTypes[num]/*[0]*/=='�' ||
+					//					*data->icon->do_ToolTypes[num]/*[0]*/=='�')
+					if ('\xab' == (char)*data->icon->do_ToolTypes[num] /*[0]*/ ||
+						'\xbb' == (char)*data->icon->do_ToolTypes[num] /*[0]*/)
 					{
 						char *ptr;
 
 						// Skip through
 						ptr = data->icon->do_ToolTypes[num];
-						while (*ptr == 0xEFBFBD || *ptr == 0xEFBFBD)
+						while (*ptr == '\xab' || *ptr == '\xbb')
 							++ptr;
 
 						// Find 'Icon by' string
@@ -413,7 +413,7 @@ void icon_build_tooltypes(icon_data *data)
 							ptr = data->author + strlen(data->author) - 1;
 
 							// Strip trailing characters
-							while (*ptr == 0xEFBFBD || *ptr == 0xEFBFBD || *ptr == ' ')
+							while (*ptr == '\xab' || *ptr == '\xbb' || *ptr == ' ')
 								*(ptr--) = 0;
 
 							// Get next tooltype
@@ -3315,20 +3315,20 @@ BOOL icon_save(icon_data *data, char *save_name, BOOL err)
 int tooltype_strcmp(char *name1, char *name2, ULONG flags)
 {
 	// Ignore euro quotes if both are authors
-	if ((name1[0] == 0xEFBFBD || name1[0] == 0xEFBFBD) && (name2[0] == 0xEFBFBD || name2[0] == 0xEFBFBD))
+	if ((name1[0] == '\xab' || name1[0] == '\xbb') && (name2[0] == '\xab' || name2[0] == '\xbb'))
 	{
-		while (*name1 == 0xEFBFBD || *name1 == 0xEFBFBD)
+		while (*name1 == '\xab' || *name1 == '\xbb')
 			++name1;
 
-		while (*name2 == 0xEFBFBD || *name2 == 0xEFBFBD)
+		while (*name2 == '\xab' || *name2 == '\xbb')
 			++name2;
 	}
 
 	// Author comes before all else
-	else if (name1[0] == 0xEFBFBD || name1[0] == 0xEFBFBD)
+	else if (name1[0] == '\xab' || name1[0] == '\xbb')
 		return -1;
 
-	else if (name2[0] == 0xEFBFBD || name2[0] == 0xEFBFBD)
+	else if (name2[0] == '\xab' || name2[0] == '\xbb')
 		return 1;
 
 	// Enabled tooltypes at top when seperated

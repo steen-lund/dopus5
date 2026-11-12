@@ -1,3 +1,13 @@
+[dopus5 next] xadopus.module crashed without xadmaster.library (issue #244)
+xadopus.module change; version bump deferred.
+
+- xadopus.module opened even when it could not open
+  xadmaster.library, and Opus then crashed the first time it used
+  it, for example when an archive was double-clicked in a lister.
+  The module now fails to open instead.  Until xadmaster.library is
+  installed, the XAD commands are not available, or do nothing if
+  Opus still has them in its module cache.
+
 [dopus5 next] Slider values over a requester background (issue #236)
 dopus5.library change; version bump deferred.
 

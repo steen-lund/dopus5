@@ -765,6 +765,11 @@ static struct LibraryHeader *LIBFUNC LibOpen(REG(d0, UNUSED ULONG version), REG(
 			base->initialized = 1;
 	}
 
+	// A failed open must not leave the open counter raised, or the
+	// library can never be expunged
+	if (base->initialized == 0)
+		base->libBase.lib_OpenCnt--;
+
 	// unprotect initBase()
 	ReleaseSemaphore(&base->libSem);
 
@@ -990,13 +995,11 @@ ULONG initBase(struct LibraryHeader *lib)
 	#endif
 #endif
 
-														UserLibInit();
-
-														return TRUE;
+														if (UserLibInit() == 0)
+															return TRUE;
 													}
 
-	UserLibCleanup();
-
+	// freeBase() calls UserLibCleanup() itself
 	freeBase(lib);
 
 	return FALSE;
@@ -1017,6 +1020,7 @@ int UserLibInit()
 	if (!(IDOpus = (struct DOpusIFace *)GetInterface(DOpusBase, "main", 1, NULL)))
 	{
 		CloseLibrary(DOpusBase);
+		DOpusBase = NULL;
 		return (10);
 	}
 #endif
@@ -1031,6 +1035,7 @@ int UserLibInit()
 	if (!(IXadMaster = (struct XadMasterIFace *)GetInterface((struct Library *)xadMasterBase, "main", 1, NULL)))
 	{
 		CloseLibrary((struct Library *)xadMasterBase);
+		xadMasterBase = NULL;
 		return (10);
 	}
 #endif
@@ -1067,16 +1072,22 @@ void UserLibCleanup()
 			CloseLibrary((struct Library *)LocaleBase);
 		}
 		FreeVec(locale);
+		locale = NULL;
 	}
 
+	// Clear everything we release, so a later open starts from scratch
 #ifdef __amigaos4__
 	DropInterface((struct Interface *)IXadMaster);
+	IXadMaster = NULL;
 #endif
 	CloseLibrary((struct Library *)xadMasterBase);
+	xadMasterBase = NULL;
 #ifdef __amigaos4__
 	DropInterface((struct Interface *)IDOpus);
+	IDOpus = NULL;
 #endif
 	CloseLibrary(DOpusBase);
+	DOpusBase = NULL;
 }
 
 ModuleInfo *LIBFUNC L_Module_Identify(REG(d0, int num))
